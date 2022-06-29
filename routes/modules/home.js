@@ -1,28 +1,25 @@
 // 引用 Express 與 Express 路由器
 const express = require('express')
+const validation = require('../../models/validation')
 const router = express.Router()
-// 引用 Restaurant model
-const Restaurant = require('../../models/restaurant')
-// 定義首頁路由
-router.get('/', (req, res) => {
 
-  Restaurant.find()
-    .lean()
-    .then(restaurants => {
-      res.render('index', { restaurants })
-    })
-    .catch(error => console.log(error))
+
+// 定義首頁(登入頁)路由
+router.get('/', (req, res) => {
+  res.render('index')
 })
 
-//定義搜尋路由
-router.get('/search', (req, res) => {
-  const {keyword, sorting} = req.query
-  const regex = new RegExp(keyword, 'i') // i for case insensitive
-  return Restaurant.find({ $or: [{ name: { $regex: regex } }, { category: { $regex: regex } }, { name_en: { $regex: regex } }] })
-    .lean() //用關鍵字搜尋餐廳時可以輸入名稱、英文名稱、餐廳分類來搜尋並且不分字母大小寫
-    .sort(sorting)
-    .then((restaurants) => res.render('index', { restaurants, keyword, sorting}))
-    .catch(error => console.log(error))
+
+//定義輸入帳密後的路由
+router.post('/', (req, res) => {
+  const email = req.body.email
+  const password = req.body.password
+  let [result, firstName] = validation(email,password)
+  if (result){
+    res.render('show', {firstName })
+  } else{
+    res.render('index', { firstName })
+  }
 })
 
 
