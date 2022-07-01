@@ -6,7 +6,10 @@ const home = require('./modules/home')
 const router = express.Router()
 router.use(bodyParser.urlencoded({ extended: true }))
 router.use(methodOverride('_method'))
-router.use('/', home)
+router.use('/',home)
+
+//static file like .js, .json, .xml, html....
+router.use(express.static(__dirname + '/public'));
 
 
 // 匯出路由器

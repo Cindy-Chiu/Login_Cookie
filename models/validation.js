@@ -7,7 +7,7 @@ function validation(email,password) { //使用者輸入的帳密是否正確
     return [false, 'Username not found! Please try again!']
   }else if(users[index].password !== password){
     
-    return [false, 'Invalid Password! Please try again!']
+    return [false, 'Invalid password! Please try again!']
   }else {
     return [true, users[index].firstName]
   }
